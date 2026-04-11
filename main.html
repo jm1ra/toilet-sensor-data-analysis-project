@@ -1,1 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Homepage</title>
+        <link rel="stylesheet" href="homepage.style.css">
+        <script src="https://xidjslcicqwbgcyjkbnj.supabase.co"></script>
+    </head> 
+    <body>
+        <div class="dashboard">
+            <h2>
+                Dashboard
+            </h2>
 
+            <div class="buttons">
+                <button>Graph Data </button>
+                <button> Analyse Data </button>
+                <button> Admin Panel </button>
+            </div>
+            
+            <div class="panels">
+
+                <div class ="datapanel">
+                    <h3>Toilet Sensor Data 1 </h3>
+                    <div class="sensor1">
+                        
+                    </div>
+                </div>
+
+                <div class ="datapanel2">
+                    <h3>Toilet Sensor Data 2</h3>
+                    <div class="sensor2">
+                        
+                    </div> 
+                </div>
+
+                    <div class="Graph">
+                        <h3>Graph Data</h3>
+                        <div class="box graph">
+
+                        </div>
+                    </div>
+                    
+                    <div class="Cleaning Schedule">
+                        <h3>Cleaning Schedule</h3>
+                        <div class="cleaning-schedule">
+
+                        </div>
+                    </div>
+
+                
+
+            </div>
+        </div>
+    </body>
+    <script>
+        const { createClient } = supabase;
+
+  const client = createClient(
+    'https://xidjslcicqwbgcyjkbnj.supabase.co',  // your project URL
+    'sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r'                       // your anon key
+  );
+
+  async function loadData() {
+    const { data, error } = await client
+      .from('Toilet Sensor 1', 'Toilet Sensor 2')   // replace with your table
+      .select('*');
+
+    if (error) {
+      console.error('Error:', error);
+      return;
+    }
+
+    // display the data
+    const container = document.getElementById('data-container');
+    data.forEach(row => {
+      const p = document.createElement('p');
+      p.textContent = row.id;
+      p.textContent = row.Toilet_Sensor;
+      p.textContent = row.batterystatus;
+      p.textContent = row.peoplecount;
+      p.textContent = row.your_column_name;
+      p.textContent = row.totalcount;
+      p.textContent = row.date;  // replace with your column
+      container.appendChild(p);
+    });
+  }
+
+  loadData();
+    </script>
+</html>
