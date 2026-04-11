@@ -10,51 +10,66 @@ This is the main homepage for the Toilet Sensors - this linked with homepage.sty
         <script src="https://xidjslcicqwbgcyjkbnj.supabase.co"></script>
     </head> 
     <body>
+    <div class="wrap">
+
         <div class="dashboard">
-            <h2>
-                Dashboard
-            </h2>
+            <h2>Dashboard</h2>
 
             <div class="buttons">
                 <button>Graph Data </button>
-                <button> Analyse Data </button>
-                <button> Admin Panel </button>
+                <button>Analyse Data </button>
+                <button>Admin Panel </button>
             </div>
-            <!-- div data container to display sensor data -->
-            <div id="data-container">
 
-            </div>
+        </div>
             <!-- div container for different panels -->
             <div class="panels">
+                
+                <div class="Graph">
+                        <h3>Graph Data</h3>
+                        <div class="box-graph">
 
-                <div class ="datapanel">
+                        </div>
+                    </div>
+
+            <div class="bottom-grid">
+
+                <div class="left-col">
+                <div class ="panel">
                     <h3>Toilet Sensor Data 1 </h3>
                     <div class="sensor1">
-                        
+                        <div class="data-row"><span>Total Count </span><span class="data-val"></span></div>
+                        <div class="data-row"><span>Battery Status </span><span class="data-val"></span></div>
+                        <div class="data-row"><span>People Count </span><span class="data-val"></span></div>
+                        <div class="data-row"><span>Date </span><span class="data-val"></span></div>
                     </div>
                 </div>
 
-                <div class ="datapanel2">
+                <div class ="panel">
                     <h3>Toilet Sensor Data 2</h3>
                     <div class="sensor2">
-                        
+                        <div class="data-row"><span>Total Count </span><span class="data-val"></span></div>
+                        <div class="data-row"><span>Battery Status </span><span class="data-val"></span></div>
+                        <div class="data-row"><span>People Count </span><span class="data-val"></span></div>
+                        <div class="data-row"><span>Date </span><span class="data-val"></span></div>
                     </div> 
                 </div>
-
-                    <div class="Graph">
-                        <h3>Graph Data</h3>
-                        <div class="box graph">
-
-                        </div>
-                    </div>
-                    
-                    <div class="Cleaning Schedule">
+                </div>
+        
+                    <div class="panel">
                         <h3>Cleaning Schedule</h3>
                         <div class="cleaning-schedule">
+                            <div class="schedule"><span>Monday</span><span class="times">Clean 12pm-2am</span></div>
+                            <div class="schedule"><span>Tuesday</span><span class="times">Clean 12pm-2am</span></div>
+                            <div class="schedule"><span>Wednesday</span><span class="times">Clean 12pm-2am</span></div>
+                            <div class="schedule"><span>Thursday</span><span class="times">Clean 12pm-2am</span></div>
+                            <div class="schedule"><span>Friday</span><span class="times">Clean 12pm-2am</span></div>
+                            <div class="schedule"><span>Saturday</span><span class="times">Clean 12pm-2am</span></div>
+                            <div class="schedule"><span>Sunday</span><span class="times">Clean 12pm-2am</span></div>
 
                         </div>
                     </div>
-
+                </div>
             </div>
         </div>
     </body>
