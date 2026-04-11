@@ -9,20 +9,24 @@ This is the main homepage for the Toilet Sensors - this linked with homepage.sty
         <link rel="stylesheet" href="homepage.style.css">
         <script src="https://xidjslcicqwbgcyjkbnj.supabase.co"></script>
     </head> 
-    <body> <!-- Dashboard header-->
+    <body>
         <div class="dashboard">
             <h2>
                 Dashboard
             </h2>
-            <!-- This section creates clickable buttons which should link to filtering features and the Admin Panel -->
+
             <div class="buttons">
                 <button>Graph Data </button>
                 <button> Analyse Data </button>
                 <button> Admin Panel </button>
             </div>
-                <!-- Identify panels - this is to create our main visual displays for the user -->
+            <!-- div data container to display sensor data -->
+            <div id="data-container">
+
+            </div>
+            <!-- div container for different panels -->
             <div class="panels">
-                    
+
                 <div class ="datapanel">
                     <h3>Toilet Sensor Data 1 </h3>
                     <div class="sensor1">
@@ -50,19 +54,17 @@ This is the main homepage for the Toilet Sensors - this linked with homepage.sty
 
                         </div>
                     </div>
-                
+
             </div>
         </div>
     </body>
-    <!-- This script is so our database can communicate with the website and gather information there 
-    It uses our public APIs ie the website link and Public API key which allows us to specify which data we want to display on the website
-    -->
+    <!-- script to connect to supabase and retrieve data from the table -->
     <script>
         const { createClient } = supabase;
 
   const client = createClient(
-    'https://xidjslcicqwbgcyjkbnj.supabase.co',
-    'sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r'
+    'https://xidjslcicqwbgcyjkbnj.supabase.co',  
+    'sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r'  
   );
 
   async function loadData() {
@@ -78,14 +80,14 @@ This is the main homepage for the Toilet Sensors - this linked with homepage.sty
     // display the data
     const container = document.getElementById('data-container');
     data.forEach(row => {
-      const p = document.createElement('p');
+      const p = document.createElement('p'); // replace with your column
       p.textContent = row.id;
       p.textContent = row.Toilet_Sensor;
       p.textContent = row.batterystatus;
       p.textContent = row.peoplecount;
       p.textContent = row.your_column_name;
       p.textContent = row.totalcount;
-      p.textContent = row.date;  // replace with your column
+      p.textContent = row.date;  
       container.appendChild(p);
     });
   }
