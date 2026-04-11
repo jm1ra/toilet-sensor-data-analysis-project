@@ -1,3 +1,6 @@
+<!--
+This is the main homepage for the Toilet Sensors - this linked with homepage.style.css will be the foundation for our users to see information being taken from the database and filtered for the user.
+-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -6,20 +9,20 @@
         <link rel="stylesheet" href="homepage.style.css">
         <script src="https://xidjslcicqwbgcyjkbnj.supabase.co"></script>
     </head> 
-    <body>
+    <body> <!-- Dashboard header-->
         <div class="dashboard">
             <h2>
                 Dashboard
             </h2>
-
+            <!-- This section creates clickable buttons which should link to filtering features and the Admin Panel -->
             <div class="buttons">
                 <button>Graph Data </button>
                 <button> Analyse Data </button>
                 <button> Admin Panel </button>
             </div>
-            
+                <!-- Identify panels - this is to create our main visual displays for the user -->
             <div class="panels">
-
+                    
                 <div class ="datapanel">
                     <h3>Toilet Sensor Data 1 </h3>
                     <div class="sensor1">
@@ -47,12 +50,13 @@
 
                         </div>
                     </div>
-
                 
-
             </div>
         </div>
     </body>
+    <!-- This script is so our database can communicate with the website and gather information there 
+    It uses our public APIs ie the website link and Public API key which allows us to specify which data we want to display on the website
+    -->
     <script>
         const { createClient } = supabase;
 
