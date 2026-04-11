@@ -1,54 +1,107 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+/* Homepage.style.css */
+* { box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
 }
-body {
-    display: flex;
-    justify-content: center;
-    align-items: top;
-    height: 100vh;
-    background-color: #f0f0f0;
+
+body { font-family: Arial, sans-serif; 
+    background: #f0f0f0; 
+    padding: 20px; 
 }
-.dashboard {
-    width: 100%;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    align-items: center;
+/* This function is mainly to center the content to give a better look for the user */
+.wrap { background: white; 
+    border: 1px solid #ddd; 
+    border-radius: 10px; 
+    padding: 16px; 
+    max-width: 900px; 
+    margin: 0 auto; 
 }
-.dashboard h2 {
-    margin-bottom: 20px;
-    color: #333;
+/* dashboard header with title and buttons */
+.dashboard { display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 14px; 
+    padding-bottom: 12px; 
+    border-bottom: 1px solid #eee; 
+} /* dashboard font size */
+.dashboard h2 { font-size: 40px; 
 }
-.buttons {
-    display: flex;
-    gap: 200px;
-    margin-bottom: 30px;
+/* Buttons styling */
+.buttons { display: flex; 
+    gap: 20px; 
 }
-.buttons button {
-    padding: 10px 60px;
+.buttons { padding: 5px 12px; 
+    font-size: 12px; 
     border: none;
-    border-radius: 4px;
-    background-color: #007BFF;
-    color: #fff;
-    cursor: pointer;
-}
-.buttons button:hover {
-    background-color: #0056b3;
-}
-.datapanel {
-    display: flex;
-    gap: 20px;
-}
-.datapanel .sensor1, .datapanel .sensor2 {
-    flex: 1;
-    background-color: #e9e9e9;
-    padding: 15px;
-    border-radius: 4px;
+    border-radius: 4px;  
+    background: #eee; 
+    cursor: pointer; 
 }
 
+/* graph styling - creating a foundation for the graph data to be easier viewed by the user  */
+.graph { background: #f5f5f5;
+     border: 1px solid #ddd; 
+     border-radius: 8px; 
+     padding: 16px; 
+     margin-bottom: 14px; 
+    } /* graph title font size + styling */
+.graph h3 { font-size: 16px; 
+    color: #666; 
+    margin-bottom: 20px; 
+} /* This is the grey border below 'graph data' */
+.box-graph { height: 220px; 
+    background: #e8e8e8; 
+    border-radius: 4px; 
+}
 
-    
+/* bottom layout - This is everything below the main graph data */
+.bottom-grid { display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 14px; 
+} /* This is the left column where the sensor data is found, the css used here is its styling and fonts */
+.left-col { display: flex; 
+    flex-direction: column; 
+    gap: 14px; 
+}
+/* the .panel is referencing the class in the HTML file, which creates a gray box around the data for better readability */
+.panel { background: #f5f5f5; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    padding: 14px; 
+
+} /* Toilet sensors and cleaning schedule title font size and styling */
+.panel h3 { font-size: 16px; 
+    font-weight: bold; 
+    margin-bottom: 8px; 
+    padding-bottom: 6px; 
+    border-bottom: 1px solid #ddd; 
+}
+
+.data-row { display: flex; 
+    justify-content: space-between; 
+    font-size: 12px; 
+    color: #555; 
+    padding: 5px 0; 
+    border-bottom: 1px solid #eee; 
+}
+
+.data-val { font-weight: bold; 
+    color: #222; 
+}
+/* Cleaning schedule section - this column is placed on the right of the toilet sensor data - this section displays the times in the styling and font set */
+.schedule { display: flex; 
+    justify-content: space-between; 
+    font-size: 12px; 
+    color: #555; 
+    padding: 5px 0; 
+    border-bottom: 1px solid #eee; 
+}
+.schedule:last-child { border-bottom: none; 
+}
+.times { background: #dbeafe; 
+    color: #1e40af; 
+    font-size: 11px; 
+    padding: 1px 6px; 
+    border-radius: 4px; 
+    font-weight: 500; 
+}
