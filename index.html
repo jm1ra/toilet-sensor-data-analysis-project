@@ -9,29 +9,62 @@
         <h1>
             Login
         </h1>
-        <form name="loginForm" onsubmit="validateLogin()" method="post">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+        <form id="loginForm">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
             <br><br>
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
             <br><br>
-            <input type="submit" value="Submit">
-            <br><br>
+            <div style="display: flex; align-items: center;">
+                <button type="button" id="login-button">Login</button>
+                <span id="error-message" style="color: red; margin-left: 10px;"></span>
+            </div>
         </form>
         </div>
         <p id="debug1"></p>
         <p id="debug2"></p>
-        <script>
-            function validateLogin() {
-                let usernameValue = document.getElementById("username").value;
-                let passwordValue = document.getElementById("password").value;
-                let textUsername = usernameValue;
-                let textPassword = passwordValue;
 
-                document.getElementById("debug1").innerHTML = textUsername;
-                document.getElementById("debug2").innerHTML = textPassword;
+        <!-- Supabase libary for password authentication -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <!-- MAIN SCRIPT ALLOWS OUR BACKEND TO SPEAK TO THE LOGIN PAGE AND THE HOMEPAGE -->
+        <script> 
+        const { createClient } = supabase
+
+        const client = createClient(
+            'https://xidjslcicqwbgcyjkbnj.supabase.co', //PUBLIC SUPABASE URL
+            'sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r' //PUBLIC SUPABASE KEY
+        )
+        
+        let attemptsRemaining = 3 //ALLOW USER TO HAVE 3 ATTEMPTS AT THEIR LOGIN
+        
+        document.getElementById('login-button').addEventListener('click', async (e) => {
+            e.preventDefault()
+            //COMMUNICATES WITH SUPABASE TO FETCH THE USERNAME AND PASSWORD AND CHECKS IF THEY ARE VALID
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+
+            const { data, error } = await client.auth.signInWithPassword({ email, password })
+
+            if (error) {
+            attemptsRemaining--
+            //FAILSAFE IF A USER SPAMS THE WRONG EMAIL OR PASSWORD, LOCKS THEM FROM THE LOGIN PAGE AND MAKES THEM HAVE TO CONTACT IT ADMINS
+            if (attemptsRemaining > 0) {
+                document.getElementById('error-message').textContent = `Incorrect email or password. Attempts remaining: ${attemptsRemaining}`
+                } else {
+                document.getElementById('error-message').textContent = 'No attempts remaining. Your account has been locked.'
+                document.getElementById('login-button').disabled = true
+                document.getElementById('login-button').style.opacity = '0.5'
+                setTimeout(() => {
+                alert('Your account has been locked. Please contact support.')
+                }, 100)
             }
-        </script>
+            
+            } else {
+            window.location.href = 'homepage.html'
+    }
+  })
+  </script>
+
     </body>
 </html>
