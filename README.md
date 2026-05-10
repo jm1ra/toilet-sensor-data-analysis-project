@@ -1,10 +1,18 @@
-# toilet-sensor-data-analysis-project
-NIT3003 and NIT3004 Implementation portion of the assignment - This project has 3 major sections which are the login page, the homepage, and the admin panel.
+# React + Vite
 
-If you are only seeing the HTML files, redirect yourself to the branch labelled "main.jsx" there you find all the new updated code using the framework REACT.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-** If you have downloaded files from 'main.jsx' please setup a folder on your personal device labelled whatever and inside that folder MUST include a folder named 'components'
-this is where your main files will go IE Login page and homepage, all the css files can be put on the outside of that components folder.**
+Currently, two official plugins are available:
 
-For any reason within your localhost you cannot see the login page or homepage it might be because you need to download and install node.js onto your device.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
+## React Compiler
+
+The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+
+Note: This will impact Vite dev & build performances.
+
+## Expanding the ESLint configuration
+
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
