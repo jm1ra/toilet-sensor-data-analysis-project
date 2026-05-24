@@ -10,17 +10,17 @@ const supabase = createClient(
 );
 
 const MAX_ATTEMPTS = 3;
-
+// Variable creation for the login fields
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [attemptsRemaining, setAttemptsRemaining] = useState(MAX_ATTEMPTS);
-  const [locked, setLocked] = useState(false);
+  const [email, setEmail] = useState(""); //Specify what username field requires
+  const [password, setPassword] = useState(""); //Sets password field 
+  const [errorMessage, setErrorMessage] = useState(""); //POP-UP when user enters incorrect username or password
+  const [attemptsRemaining, setAttemptsRemaining] = useState(MAX_ATTEMPTS); //Counts the amount of failed attempts
+  const [locked, setLocked] = useState(false); //Locks user after x amount of attempts
     const navigate = useNavigate();
   const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
-
+//Incorrect amount of attempts logic
     if (error) {
       const newAttempts = attemptsRemaining - 1;
       setAttemptsRemaining(newAttempts);
@@ -36,7 +36,7 @@ export default function Login() {
       navigate("/homepage");
     }
   };
-
+/*The login pages visuals and features - Creates all the necessary fields for users to access the homepage */
 return (
   <div className="Login-section">
     <div className="login-logo" />
