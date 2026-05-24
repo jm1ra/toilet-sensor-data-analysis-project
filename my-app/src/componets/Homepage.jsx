@@ -1,5 +1,5 @@
 // src/components/Homepage.jsx
-import { useState, useEffect } from "react";
+import { useState, useEffect, useNavigate } from "react";
 import { createClient } from "@supabase/supabase-js";
 import "../homepage.style.css";
 
@@ -9,6 +9,7 @@ const supabase = createClient(
 );
 
 export default function Homepage() {
+  const navigate = useNavigate();
   const [sensor1, setSensor1] = useState(null);
   const [sensor2, setSensor2] = useState(null);
   const [error, setError] = useState(null);
@@ -50,7 +51,13 @@ export default function Homepage() {
         <div className="buttons">
           <button>Graph Data</button>
           <button>Analyse Data</button>
-          <button>Admin Panel</button>
+          <button
+                 id="admin-panel"
+                 onClick={navigate("/admin")}
+                 disabled={locked}
+          >
+          Admin Panel
+          </button>
         </div>
       </div>
 
