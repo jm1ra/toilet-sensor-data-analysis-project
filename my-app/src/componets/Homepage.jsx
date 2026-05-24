@@ -7,7 +7,7 @@ const supabase = createClient(
   "https://xidjslcicqwbgcyjkbnj.supabase.co",
   "sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r"
 );
-
+// Export data from supabase database
 export default function Homepage() {
   const navigate = useNavigate();
   const [sensor1, setSensor1] = useState(null);
@@ -33,7 +33,7 @@ export default function Homepage() {
       .order("date", { ascending: false })
       .limit(1)
       .single();
-
+// Failsafe creation if data cannot be located or sourced
     if (error1 || error2) {
       setError("Failed to load sensor data.");
       console.error(error1 || error2);
@@ -43,7 +43,7 @@ export default function Homepage() {
     setSensor1(data1);
     setSensor2(data2);
   }
-
+/* The following code below is the visuals that will be displayed on the homepage; buttons, data fields and cleaning schedule times will all be displayed. */
   return (
     <div className="wrap">
       <div className="dashboard">
@@ -60,8 +60,8 @@ export default function Homepage() {
           </button>
         </div>
       </div>
-
-      <div className="panels">
+      
+      <div className="panels"> 
         <div className="Graph">
           <h3>Graph Data</h3>
           <div className="box-graph"></div>
