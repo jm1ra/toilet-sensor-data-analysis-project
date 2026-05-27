@@ -1,5 +1,6 @@
 // src/components/admin.jsx
-import { useState, useEffect, useNavigate } from "react";
+import { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import "../admin.style.css";
 
@@ -13,6 +14,8 @@ export default function Admin() {
     const [sensor1, setSensor1] = useState(null);
     const [sensor2, setSensor2] = useState(null);
     const [error, setError] = useState(null);
+    const [locked, setlocked] = useState(false);
+
 //below lines have questionable depenancy. Figure out if needed and if not curate.
     //useEffect(() => {
     //    loadData();
@@ -42,7 +45,6 @@ export default function Admin() {
 
   //      setSensor1(data1);
 //        setSensor2(data2);
-    }
 
     return (
         <div className="wrap">
@@ -53,13 +55,15 @@ export default function Admin() {
                     <button>Manage Employees</button>
                     <button
                         id="return-to-home"
-                        onClick={navigate("/Homepage")}
+                        onClick={() => navigate("/Homepage")}
                         disabled={locked}
                     >
                         Return to Homepage
                     </button>
                 </div>
             </div>
-            </div>
+          </div>
+      
        
     );
+  }
