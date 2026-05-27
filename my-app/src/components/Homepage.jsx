@@ -1,5 +1,6 @@
 // src/components/Homepage.jsx
-import { useState, useEffect, useNavigate } from "react";
+import { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import "../homepage.style.css";
 
@@ -13,6 +14,7 @@ export default function Homepage() {
   const [sensor1, setSensor1] = useState(null);
   const [sensor2, setSensor2] = useState(null);
   const [error, setError] = useState(null);
+  const [locked, setlocked] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -53,7 +55,7 @@ export default function Homepage() {
           <button>Analyse Data</button>
           <button
                  id="admin-panel"
-                 onClick={navigate("/admin")}
+                 onClick={() => navigate("/admin")}
                  disabled={locked}
           >
           Admin Panel
