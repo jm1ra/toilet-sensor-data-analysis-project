@@ -41,7 +41,7 @@ body { font-family: Arial, sans-serif;
 #admin-panel {
     width: 100%;
     padding: 10px;
-    background: #1a1a2e;
+    background: #7e2533;
     color: #ffffff;
     border: none;
     border-radius: 8px;
@@ -53,7 +53,7 @@ body { font-family: Arial, sans-serif;
 }
 
     #admin-panel:hover {
-        background: #2d2d4e;
+        background: #6d2626;
     }
 
     #admin-panel:disabled {
@@ -61,6 +61,51 @@ body { font-family: Arial, sans-serif;
         cursor: not-allowed;
     }
 
+#graph-data {
+    width: 100%;
+    padding: 10px;
+    background: #1a1a2e;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+    #graph-data:hover {
+        background: #2d2d4e;
+    }
+
+    #graph-data:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+#analyse-data {
+    width: 100%;
+    padding: 10px;
+    background: #1a1a2e;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s, opacity 0.2s;
+}
+
+    #analyse-data:hover {
+        background: #2d2d4e;
+    }
+
+    #analyse-data:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 
 /* graph styling - creating a foundation for the graph data to be easier viewed by the user  */
 .graph { background: #f5f5f5;
