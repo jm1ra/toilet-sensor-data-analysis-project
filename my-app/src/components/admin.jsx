@@ -3,6 +3,7 @@ import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import "../admin.style.css";
 
+export default function Admin() {
     return (
         <div className="wrap">
             <div className="admin-page">
@@ -24,7 +25,5 @@ import "../admin.style.css";
                 </div>
             </div>
           </div>
-      
-       
     );
-  }
+}

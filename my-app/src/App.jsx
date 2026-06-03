@@ -1,6 +1,6 @@
 // src/App.jsx
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
+import Login from "./components/login";
 import Homepage from "./components/Homepage";
 import Admin from "./components/admin";
 import AddData from "./components/AddData";
