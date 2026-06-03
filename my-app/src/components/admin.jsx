@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../admin.style.css";
 
 export default function Admin() {
+    const navigate = useNavigate();
     return (
         <div className="wrap">
             <div className="admin-page">
@@ -17,8 +18,7 @@ export default function Admin() {
                     </button>
                     <button
                         id="return-to-home"
-                        onClick={() => navigate("/Homepage")}
-                        disabled={locked}
+                        onClick={() => navigate("/homepage", { replace: true })}
                     >
                         Return to Homepage
                     </button>

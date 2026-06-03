@@ -51,23 +51,23 @@ export default function Homepage() {
     setSensor2(data2);
 
     //Data for the graph (Last 14 rows from each sensor)
-    const {data: history1 } = await supabase
+    const {data: history1, error: histError1 } = await supabase
     .from("Toilet Sensor 1")
     .select("date, Totalcount, peoplecount")
-    .order("date, { ascending: true }")
+    .order("date", { ascending: true })
     .limit(14);
 
-    const {data: history2 } = await supabase
+    const {data: history2 , error: histError2} = await supabase
     .from("Toilet Sensor 2")
     .select("date, Totalcount, peoplecount")
-    .order("date, { ascending: true }")
+    .order("date", { ascending: true })
     .limit(14);
 
     console.log("history1:", history1);
     console.log("history1 error:", histError1);
     console.log("history2:", history2);
     console.log("history2 error:", histError2);
-    console.log("merged:", merged);
+  
 
 
 
