@@ -53,13 +53,13 @@ export default function Homepage() {
     //Data for the graph (Last 14 rows from each sensor)
     const {data: history1, error: histError1 } = await supabase
     .from("Toilet Sensor 1")
-    .select("date, Totalcount, peoplecount")
+    .select("date, totalcount, peoplecount")
     .order("date", { ascending: true })
     .limit(14);
 
     const {data: history2 , error: histError2} = await supabase
     .from("Toilet Sensor 2")
-    .select("date, Totalcount, peoplecount")
+    .select("date, totalcount, peoplecount")
     .order("date", { ascending: true })
     .limit(14);
 
@@ -73,7 +73,7 @@ export default function Homepage() {
 
     const merged = (history1 || []).map((row, i) => {
       return {
-      date: new Date(row.date).toLocaleDateString("en-AU", { month: "short", day: "numeric "}),
+      date: new Date(row.date).toLocaleDateString("en-AU", { month: "short", day: "numeric"}),
       "Sensor 1": row.totalcount ?? row.peoplecount,
       "Sensor 2": history2?.[i]?.totalcount ?? history2?.[i]?.peoplecount ?? 0,
       };
