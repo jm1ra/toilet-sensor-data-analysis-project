@@ -2,7 +2,11 @@
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
+import { Bar } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend} from "chart.js";
 import "../homepage.style.css";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const supabase = createClient(
   "https://xidjslcicqwbgcyjkbnj.supabase.co",
@@ -13,6 +17,7 @@ export default function Homepage() {
   const navigate = useNavigate();
   const [sensor1, setSensor1] = useState(null);
   const [sensor2, setSensor2] = useState(null);
+  const [chartData, setChartData] = useState([]);
   const [error, setError] = useState(null);
   const [locked, setlocked] = useState(false);
 
@@ -44,7 +49,46 @@ export default function Homepage() {
 
     setSensor1(data1);
     setSensor2(data2);
+
+    //Data for the graph (Last 14 rows from each sensor)
+    const {data: history1 } = await supabase
+    .from("Toilet Sensor 1")
+    .select("date, Totalcount, peoplecount")
+    .order("date, { ascending: true }")
+    .limit(14);
+
+    const {data: history2 } = await supabase
+    .from("Toilet Sensor 2")
+    .select("date, Totalcount, peoplecount")
+    .order("date, { ascending: true }")
+    .limit(14);
+
+    console.log("history1:", history1);
+    console.log("history1 error:", histError1);
+    console.log("history2:", history2);
+    console.log("history2 error:", histError2);
+    console.log("merged:", merged);
+
+
+
+    const merged = (history1 || []).map((row, i) => {
+      return {
+      date: new Date(row.date).toLocaleDateString("en-AU", { month: "short", day: "numeric "}),
+      "Sensor 1": row.totalcount ?? row.peoplecount,
+      "Sensor 2": history2?.[i]?.totalcount ?? history2?.[i]?.peoplecount ?? 0,
+      };
+    });
+
+    setChartData(merged);
   }
+
+  const avg = 
+    chartData.length > 0
+    ? Math.round(
+      chartData.reduce((sum, d) => sum + (d["Sensor 1"] || 0), 0) / chartData.length
+  
+    )
+    : 0;
 /* The following code below is the visuals that will be displayed on the homepage; buttons, data fields and cleaning schedule times will all be displayed. */
   return (
     <div className="wrap">
@@ -66,9 +110,37 @@ export default function Homepage() {
       <div className="panels"> 
         <div className="Graph">
           <h3>Graph Data</h3>
-          <div className="box-graph"></div>
+          <div className="box-graph">
+            {chartData.length > 0 ? (
+              <Bar
+                data={{
+                  labels: chartData.map(d => d.date),
+                  datasets: [
+                    {
+                      label: "Sensor 1",
+                      data: chartData.map(d => d["Sensor 1"]),
+                      backgroundColor: "#2563eb",
+                      borderRadius: 4, 
+                    },
+                    {
+                      label: "Sensor 2",
+                      data: chartData.map(d => d["Sensor 2"]),
+                      backgroundColor: "#16a34a",
+                      borderRadius: 4,
+                    },
+                  ],
+                }}
+                options={{
+                  responsive: true, 
+                  plugins: { legend: { position: "top"}},
+                  scales: { y: {beginAtZero: true}},
+                }}
+                />
+              ) : (
+                <p>Loading Graph...</p>
+              )}
+          </div>
         </div>
-
         <div className="bottom-grid">
           <div className="left-col">
 
