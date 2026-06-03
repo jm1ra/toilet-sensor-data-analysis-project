@@ -20,6 +20,7 @@ export default function Homepage() {
   const [chartData, setChartData] = useState([]);
   const [error, setError] = useState(null);
   const [locked, setlocked] = useState(false);
+  const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
     loadData();
@@ -67,8 +68,14 @@ export default function Homepage() {
     console.log("history1 error:", histError1);
     console.log("history2:", history2);
     console.log("history2 error:", histError2);
-  
 
+    const { data: scheduleData } = await supabase
+    .from("cleaning_schedule")
+    .select("*")
+    .order("id", { ascending: true });
+
+    if (scheduleData) setSchedule(scheduleData);
+  
 
 
     const merged = (history1 || []).map((row, i) => {
@@ -81,7 +88,6 @@ export default function Homepage() {
 
     setChartData(merged);
   }
-
   const avg = 
     chartData.length > 0
     ? Math.round(
@@ -185,10 +191,10 @@ export default function Homepage() {
           <div className="panel">
             <h3>Cleaning Schedule</h3>
             <div className="cleaning-schedule">
-              {["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"].map(day => (
-                <div className="schedule" key={day}>
-                  <span>{day}</span>
-                  <span className="times">Clean 12pm-2am</span>
+              {schedule.map(item => (
+                <div className="schedule" key={item.id}>
+                  <span>{item.day}</span>
+                  <span className="times">Clean{item.time}</span>
                 </div>
               ))}
             </div>

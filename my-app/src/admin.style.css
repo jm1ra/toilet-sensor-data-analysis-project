@@ -201,3 +201,43 @@ body {
     border-radius: 4px;
     font-weight: 500;
 }
+
+.schedule-editor {
+  margin-top: 2rem;
+}
+
+.schedule-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.schedule-day {
+  width: 120px;
+  font-weight: 500;
+}
+
+.schedule-row input {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  width: 150px;
+}
+
+#save-schedule {
+  margin-top: 1rem;
+  padding: 0.5rem 1.5rem;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.save-message {
+  margin-top: 0.5rem;
+  color: green;
+  font-weight: 500;
+}
