@@ -56,13 +56,40 @@ export default function Homepage() {
     .from("Toilet Sensor 1")
     .select("date, totalcount, peoplecount")
     .order("date", { ascending: true })
-    .limit(14);
+    .limit(500);
 
     const {data: history2 , error: histError2} = await supabase
     .from("Toilet Sensor 2")
     .select("date, totalcount, peoplecount")
     .order("date", { ascending: true })
-    .limit(14);
+    .limit(500);
+
+    function aggregateByDate(data) {
+      const days = {};
+      (data || []).forEach(row => {
+        const day = new Date(row.date).toLocaleDateString("en-AU", { month: "short", day: "numeric"});
+        const count = row.peoplecount ?? 0;
+        if (count <= 20) {
+          if (!days[day]) days[day] = {total: 0, entries: 0, maxtotal: 0};
+          days[day].total += count;
+          days[day].entries += 1;
+          days[day].maxtotal = Math.max(days[day].maxtotal, row.totalcount ?? 0);
+        }
+      });
+      return days;
+    }
+
+    const days1 = aggregateByDate(history1);
+    const days2 = aggregateByDate(history2);
+
+    const last14days = Object.keys(days1).slice(0, 14).reverse();
+
+    const Merged = last14days.map(day => ({
+      date: day,
+      "Sensor 1": days1[day]?.total ?? 0,
+      "Sensor 2": days2[day]?.total ?? 0,
+    }));
+    setChartData(Merged);
 
     console.log("history1:", history1);
     console.log("history1 error:", histError1);
