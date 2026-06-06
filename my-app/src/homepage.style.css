@@ -25,6 +25,7 @@ body { font-family: Arial, sans-serif;
     border-bottom: 1px solid #eee; 
 } /* dashboard font size */
 .dashboard h2 { font-size: 40px; 
+    padding-right: 50px;
 }
 /* Buttons styling */
 .buttons { display: flex; 
@@ -57,29 +58,6 @@ body { font-family: Arial, sans-serif;
     }
 
     #admin-panel:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-#graph-data {
-    width: 100%;
-    padding: 10px;
-    background: #1a1a2e;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    transition: background 0.2s, opacity 0.2s;
-}
-
-    #graph-data:hover {
-        background: #2d2d4e;
-    }
-
-    #graph-data:disabled {
         opacity: 0.5;
         cursor: not-allowed;
     }
