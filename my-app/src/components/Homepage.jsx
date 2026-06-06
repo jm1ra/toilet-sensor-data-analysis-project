@@ -129,11 +129,6 @@ export default function Homepage() {
         <h2>Dashboard</h2>
         <div className="buttons">
           <button
-            id="graph-data"
-          >
-          Graph Data
-          </button>
-          <button
             id="analyse-data"
           >
           Analyse Data
