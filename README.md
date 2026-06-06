@@ -9,6 +9,7 @@ Our task is to create a web application with a login page, home page and admin p
 3. Run "npm install" (**MAKE SURE THIS COMMAND IS USING THE my-app DIRECTORY**)
 4. Run "npm run dev"
 5. Ctrl + Left click the local host link that the terminal provides you.
+6. Ctrl + C in the terminal to stop the web app
 
 You can run npm install inside VS code's built in terminal, just make sure you are in the correct directory first,
 if you are unsure about running the powershell command, that command only puts your devices user into developer mode.
