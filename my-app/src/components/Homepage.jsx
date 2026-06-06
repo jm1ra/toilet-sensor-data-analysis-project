@@ -128,8 +128,16 @@ export default function Homepage() {
       <div className="dashboard">
         <h2>Dashboard</h2>
         <div className="buttons">
-          <button>Graph Data</button>
-          <button>Analyse Data</button>
+          <button
+            id="graph-data"
+          >
+          Graph Data
+          </button>
+          <button
+            id="analyse-data"
+          >
+          Analyse Data
+          </button>
           <button
                  id="admin-panel"
                  onClick={() => navigate("/admin")}
