@@ -1,44 +1,57 @@
 /* Homepage.style.css */
-* { box-sizing: border-box; 
-    margin: 0; 
-    padding: 0; 
+* { box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
-
-body { font-family: Arial, sans-serif; 
-    background: #f0f0f0; 
-    padding: 20px; 
+body { font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    padding: 20px;
 }
-/* This function is mainly to center the content to give a better look for the user */
-.wrap { background: white; 
-    border: 1px solid #ddd; 
-    border-radius: 10px; 
-    padding: 16px; 
-    max-width: 900px; 
-    margin: 0 auto; 
+.wrap { background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 16px;
+    max-width: 900px;
+    margin: 0 auto;
 }
-/* dashboard header with title and buttons */
-.dashboard { display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    margin-bottom: 14px; 
-    padding-bottom: 12px; 
-    border-bottom: 1px solid #eee; 
-} /* dashboard font size */
-.dashboard h2 { font-size: 40px; 
+.dashboard { display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #eee;
+}
+.dashboard h2 { font-size: 40px;
     padding-right: 50px;
 }
-/* Buttons styling */
-.buttons { display: flex; 
-    gap: 20px; 
-}
-.buttons { padding: 5px 12px; 
-    font-size: 12px; 
-    border: none;
-    border-radius: 4px;  
-    background: #eee; 
-    cursor: pointer; 
+.buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
+.buttons button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    background: #000000;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, opacity 0.2s;
+    white-space: nowrap;
+}
+
+.buttons button:hover {
+    background: #414040;
+}
+
+.btn-active {
+    background-color: #1e3a5f;
+    color: #fff ;
+    border-color: #1e3a5f;
+}
 #admin-panel {
     width: 100%;
     padding: 10px;
@@ -52,16 +65,8 @@ body { font-family: Arial, sans-serif;
     margin-top: 0.5rem;
     transition: background 0.2s, opacity 0.2s;
 }
-
-    #admin-panel:hover {
-        background: #6d2626;
-    }
-
-    #admin-panel:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
+    #admin-panel:hover { background: #6d2626; }
+    #admin-panel:disabled { opacity: 0.5; cursor: not-allowed; }
 #analyse-data {
     width: 100%;
     padding: 10px;
@@ -75,80 +80,155 @@ body { font-family: Arial, sans-serif;
     margin-top: 0.5rem;
     transition: background 0.2s, opacity 0.2s;
 }
-
-    #analyse-data:hover {
-        background: #2d2d4e;
-    }
-
-    #analyse-data:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-
-/* graph styling - creating a foundation for the graph data to be easier viewed by the user  */
-.graph { background: #f5f5f5;
-     border: 1px solid #ddd; 
-     border-radius: 8px; 
-     padding: 16px; 
-     margin-bottom: 14px; 
-    } /* graph title font size + styling */
-.graph h3 { font-size: 16px; 
-    color: #666; 
-    margin-bottom: 20px; 
-} /* This is the grey border below 'graph data' */
-.box-graph { height: 220px; 
-    background: #e8e8e8; 
-    border-radius: 4px; 
+    #analyse-data:hover { background: #2d2d4e; }
+    #analyse-data:disabled { opacity: 0.5; cursor: not-allowed; }
+.Graph { background: #f5f5f5;
+     border: 1px solid #ddd;
+     border-radius: 8px;
+     padding: 16px;
+     margin-bottom: 14px;
+} 
+.Graph h3 { font-size: 16px; color: #666; margin-bottom: 20px; }
+.box-graph { background: #e8e8e8; border-radius: 4px; width: 100%; height: 220px; overflow: hidden; position: relative; }
+.box-graph canvas { display: block; width: 100% !important; height: 100% !important; }
+.bottom-grid { display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
 }
-
-/* bottom layout - This is everything below the main graph data */
-.bottom-grid { display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 14px; 
-} /* This is the left column where the sensor data is found, the css used here is its styling and fonts */
-.left-col { display: flex; 
-    flex-direction: column; 
-    gap: 14px; 
+.left-col { display: flex; flex-direction: column; gap: 14px; }
+.panel { background: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; padding: 14px; }
+.panel h3 { font-size: 16px; font-weight: bold; margin-bottom: 8px;
+    padding-bottom: 6px; border-bottom: 1px solid #ddd; }
+.data-row { display: flex; justify-content: space-between; font-size: 12px;
+    color: #555; padding: 5px 0; border-bottom: 1px solid #eee; }
+.data-val { font-weight: bold; color: #222; }
+.schedule { display: flex; justify-content: space-between; font-size: 12px;
+    color: #555; padding: 5px 0; border-bottom: 1px solid #eee; }
+.schedule:last-child { border-bottom: none; }
+.times { background: #dbeafe; color: #1e40af; font-size: 11px;
+    padding: 1px 6px; border-radius: 4px; font-weight: 500; }
+/* ── New styles below ── */
+.btn-active {
+  background-color: #1e3a5f;
+  color: #fff;
+  border-color: #1e3a5f;
 }
-/* the .panel is referencing the class in the HTML file, which creates a gray box around the data for better readability */
-.panel { background: #f5f5f5; 
-    border: 1px solid #ddd; 
-    border-radius: 8px; 
-    padding: 14px; 
-
-} /* Toilet sensors and cleaning schedule title font size and styling */
-.panel h3 { font-size: 16px; 
-    font-weight: bold; 
-    margin-bottom: 8px; 
-    padding-bottom: 6px; 
-    border-bottom: 1px solid #ddd; 
+.analyse-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
 }
-
-.data-row { display: flex; 
-    justify-content: space-between; 
-    font-size: 12px; 
-    color: #555; 
-    padding: 5px 0; 
-    border-bottom: 1px solid #eee; 
+.filter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 8px;
 }
-
-.data-val { font-weight: bold; 
-    color: #222; 
+.preset-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
-/* Cleaning schedule section - this column is placed on the right of the toilet sensor data - this section displays the times in the styling and font set */
-.schedule { display: flex; 
-    justify-content: space-between; 
-    font-size: 12px; 
-    color: #555; 
-    padding: 5px 0; 
-    border-bottom: 1px solid #eee; 
+.preset-btn {
+  padding: 6px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
 }
-.schedule:last-child { border-bottom: none; 
+.preset-btn:hover { border-color: #2563eb; color: #2563eb; }
+.preset-active {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
 }
-.times { background: #dbeafe; 
-    color: #1e40af; 
-    font-size: 11px; 
-    padding: 1px 6px; 
-    border-radius: 4px; 
-    font-weight: 500; 
+.custom-range {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
+.custom-range label { display: flex; align-items: center; gap: 6px;
+  font-size: 0.85rem; color: #374151; }
+.custom-range input[type="date"] {
+  padding: 5px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+.apply-btn {
+  padding: 7px 20px;
+  background: #7f1d1d;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.apply-btn:hover { background: #991b1b; }
+.analyse-placeholder {
+  text-align: center;
+  color: #94a3b8;
+  padding: 40px 0;
+  font-size: 0.95rem;
+}
+.analyse-results { display: flex; flex-direction: column; gap: 20px; }
+.analyse-bottom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .analyse-bottom-grid { grid-template-columns: 1fr; }
+}
+.stats-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.stats-table th,
+.stats-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: right;
+}
+.stats-table th:first-child,
+.stats-table td:first-child {
+  text-align: left;
+  color: #64748b;
+  font-weight: 500;
+}
+.stats-table th { color: #374151; font-weight: 600; }
+.comparison { display: flex; flex-direction: column; gap: 10px; }
+.comparison-bar {
+  display: flex;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+.bar-s1 { background: #2563eb; transition: width 0.4s ease; }
+.bar-s2 { background: #16a34a; transition: width 0.4s ease; }
+.comparison-labels { display: flex; justify-content: space-between; font-size: 0.8rem; }
+.s1-label { color: #2563eb; font-weight: 600; }
+.s2-label { color: #16a34a; font-weight: 600; }
+.comparison-note { font-size: 0.85rem; color: #64748b; margin: 0; }
+.busiest-list { display: flex; flex-direction: column; gap: 8px; }
+.busiest-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.busiest-rank { font-size: 0.75rem; font-weight: 700; color: #94a3b8; width: 24px; }
+.busiest-date { flex: 1; font-size: 0.875rem; color: #374151; }
+.busiest-count { font-size: 0.875rem; font-weight: 600; color: #1e3a5f; }
