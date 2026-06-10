@@ -6,7 +6,7 @@ import "../admin.style.css";
 
 const supabase = createClient(
     "https://xidjslcicqwbgcyjkbnj.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpZGpzbGNpY3F3YmdjeWprYm5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzE0MTQsImV4cCI6MjA4OTYwNzQxNH0.AtK8V9sWxiPd2Eptu3 - 5oPxtu57HQqBgFB5FwnHpEL4"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpZGpzbGNpY3F3YmdjeWprYm5qIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDAzMTQxNCwiZXhwIjoyMDg5NjA3NDE0fQ.fXhs8bVa_mKGICqpFWpGE0EV_II2LP-K-YJhUU31PB4" //NOTE THIS IS A SECRET KEY
 );
 
 
