@@ -322,8 +322,8 @@ export default function Homepage() {
                             <span className="s2-label">Sensor 2 — {pct2}% ({t2})</span>
                           </div>
                           <p className="comparison-note">
-                            {t1 > t2 ? `Sensor 1 had ${t1 - t2} more uses.`
-                              : t2 > t1 ? `Sensor 2 had ${t2 - t1} more uses.`
+                            {t1 > t2 ? `Sensor 1 had ${t1 - t2} more records.`
+                              : t2 > t1 ? `Sensor 2 had ${t2 - t1} more records.`
                               : "Both sensors had equal usage."}
                           </p>
                         </div>
@@ -398,7 +398,7 @@ export default function Homepage() {
               {schedule.map(item => (
                 <div className="schedule" key={item.id}>
                   <span>{item.day}</span>
-                  <span className="times">Clean{item.time}</span>
+                  <span className="times">Clean {item.time}</span>
                 </div>
               ))}
             </div>
