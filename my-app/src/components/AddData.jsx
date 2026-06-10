@@ -6,8 +6,9 @@ import "../admin.style.css";
 
 const supabase = createClient(
     "https://xidjslcicqwbgcyjkbnj.supabase.co",
-    "sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r"
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpZGpzbGNpY3F3YmdjeWprYm5qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwMzE0MTQsImV4cCI6MjA4OTYwNzQxNH0.AtK8V9sWxiPd2Eptu3 - 5oPxtu57HQqBgFB5FwnHpEL4"
 );
+
 
 const TABLES = ["Toilet Sensor 1", "Toilet Sensor 2"];
 
@@ -68,7 +69,7 @@ export default function AddData() {
             const { error: deleteError } = await supabase
                 .from(selectedTable)
                 .delete()
-                .neq("date", "");
+                .gt("date", "1970-01-01T00:00:00.000Z");
 
             if (deleteError) throw new Error(`Failed to clear table: ${deleteError.message}`);
 
