@@ -1,13 +1,8 @@
 // src/components/admin.jsx
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../supabaseClient";
 import "../admin.style.css";
-
-const supabase = createClient(
-  "https://xidjslcicqwbgcyjkbnj.supabase.co",
-  "sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r"
-);
 
 export default function Admin() {
     const navigate = useNavigate();

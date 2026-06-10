@@ -1,17 +1,31 @@
 /// src/components/ManageEmployees.jsx
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../supabaseClient";
 import "../admin.style.css";
 
 const FUNCTION_URL = "https://xidjslcicqwbgcyjkbnj.supabase.co/functions/v1/manage-users";
 
 async function callFunction(action, payload = {}) {
+    const { data: { session } } = await supabase.auth.getSession();
+
     const res = await fetch(FUNCTION_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session?.access_token ?? ""}`,
+        },
         body: JSON.stringify({ action, payload }),
     });
-    return res.json();
+
+    const json = await res.json();
+
+    if (!res.ok || json.error || json.message) {
+        const msg = json.error?.message ?? json.error ?? json.message ?? "Unknown error";
+        return { data: null, error: { message: msg } };
+    }
+
+    return json;
 }
 
 const EMPTY_FORM = { email: "", password: "" };
@@ -33,6 +47,7 @@ export default function ManageEmployees() {
     const [editMessage, setEditMessage] = useState("");
 
     const [deletingId, setDeletingId] = useState(null);
+    const [deleteError, setDeleteError] = useState(null); // FIX: track delete errors
 
     useEffect(() => { fetchUsers(); }, []);
 
@@ -43,7 +58,8 @@ export default function ManageEmployees() {
         if (error) {
             setLoadError(error.message);
         } else {
-            setUsers(data.users);
+            // FIX: guard against the shape varying (data.users vs data directly)
+            setUsers(data?.users ?? data ?? []);
         }
         setLoading(false);
     }
@@ -55,7 +71,7 @@ export default function ManageEmployees() {
             return;
         }
         setFormStatus("loading");
-        const { data, error } = await callFunction("create", {
+        const { error } = await callFunction("create", {
             email: form.email,
             password: form.password,
         });
@@ -89,8 +105,12 @@ export default function ManageEmployees() {
     }
 
     async function handleDelete(id) {
+        setDeleteError(null); // FIX: clear any previous error
         const { error } = await callFunction("delete", { id });
-        if (!error) {
+        if (error) {
+            // FIX: surface delete errors instead of silently doing nothing
+            setDeleteError(error.message);
+        } else {
             setDeletingId(null);
             fetchUsers();
         }
@@ -176,7 +196,10 @@ export default function ManageEmployees() {
                                             Edit
                                         </button>
                                         <button
-                                            onClick={() => setDeletingId(user.id)}
+                                            onClick={() => {
+                                                setDeletingId(user.id);
+                                                setDeleteError(null); // FIX: clear stale error when opening modal
+                                            }}
                                             style={{ ...actionBtn, color: "#c00" }}
                                         >
                                             Delete
@@ -231,6 +254,12 @@ export default function ManageEmployees() {
                         <p style={{ fontSize: "0.875rem", marginBottom: "1rem" }}>
                             This will permanently delete the user. This cannot be undone.
                         </p>
+                        {/* FIX: show delete error inside the modal so the user knows what went wrong */}
+                        {deleteError && (
+                            <p style={{ color: "red", fontSize: "0.85rem", marginBottom: "0.75rem" }}>
+                                {deleteError}
+                            </p>
+                        )}
                         <div style={{ display: "flex", gap: "0.5rem" }}>
                             <button
                                 id="add-data"
@@ -239,7 +268,9 @@ export default function ManageEmployees() {
                             >
                                 Delete
                             </button>
-                            <button onClick={() => setDeletingId(null)} style={actionBtn}>Cancel</button>
+                            <button onClick={() => { setDeletingId(null); setDeleteError(null); }} style={actionBtn}>
+                                Cancel
+                            </button>
                         </div>
                     </div>
                 </div>

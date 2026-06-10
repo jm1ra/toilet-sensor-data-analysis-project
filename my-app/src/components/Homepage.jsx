@@ -1,18 +1,13 @@
 // src/components/Homepage.jsx
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../supabaseClient";
 import { Bar } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend} from "chart.js";
 import "../homepage.style.css";
 
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
-
-const supabase = createClient(
-  "https://xidjslcicqwbgcyjkbnj.supabase.co",
-  "sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r"
-);
 
 export default function Homepage() {
   const navigate = useNavigate();
@@ -322,8 +317,8 @@ export default function Homepage() {
                             <span className="s2-label">Sensor 2 — {pct2}% ({t2})</span>
                           </div>
                           <p className="comparison-note">
-                            {t1 > t2 ? `Sensor 1 had ${t1 - t2} more uses.`
-                              : t2 > t1 ? `Sensor 2 had ${t2 - t1} more uses.`
+                            {t1 > t2 ? `Sensor 1 had ${t1 - t2} more records.`
+                              : t2 > t1 ? `Sensor 2 had ${t2 - t1} more records.`
                               : "Both sensors had equal usage."}
                           </p>
                         </div>

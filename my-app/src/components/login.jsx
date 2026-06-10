@@ -2,12 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import "../style.css";
 import { useState } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  "https://xidjslcicqwbgcyjkbnj.supabase.co", // PUBLIC SUPABASE URL
-  "sb_publishable_vbSoXWaeZgXTtr56mGn5ig_UFivSe5r" // PUBLIC SUPABASE KEY
-);
+import { supabase } from "../supabaseClient";
 
 const MAX_ATTEMPTS = 3;
 // Variable creation for the login fields
