@@ -2,12 +2,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
+import { supabase } from "../supabaseClient";
 import "../admin.style.css";
 
-const supabase = createClient(
-    "https://xidjslcicqwbgcyjkbnj.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhpZGpzbGNpY3F3YmdjeWprYm5qIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDAzMTQxNCwiZXhwIjoyMDg5NjA3NDE0fQ.fXhs8bVa_mKGICqpFWpGE0EV_II2LP-K-YJhUU31PB4" //NOTE THIS IS A SECRET KEY
-);
 
 
 const TABLES = ["Toilet Sensor 1", "Toilet Sensor 2"];
