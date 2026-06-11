@@ -48,7 +48,7 @@ body {
     cursor: pointer;
 }
 
-#add-data {
+#replace-data {
     width: 100%;
     padding: 10px;
     background: #1a1a2e;
@@ -62,11 +62,11 @@ body {
     transition: background 0.2s, opacity 0.2s;
 }
 
-    #add-data:hover {
+    #replace-data:hover {
         background: #2d2d4e;
     }
 
-    #add-data:disabled {
+    #replace-data:disabled {
         opacity: 0.5;
         cursor: not-allowed;
     }
