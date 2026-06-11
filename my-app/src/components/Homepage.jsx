@@ -2,12 +2,12 @@
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
-import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend} from "chart.js";
+import { Bar, Line } from "react-chartjs-2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend } from "chart.js";
 import "../homepage.style.css";
 
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend);
 
 export default function Homepage() {
   const navigate = useNavigate();
@@ -188,7 +188,92 @@ export default function Homepage() {
       .sort((a, b) => b.combined - a.combined)
       .slice(0, 5);
 
-    setAnalysisResult({ filtered, stats1: stats(s1vals), stats2: stats(s2vals), busiest });
+    const quietest = [...filtered]
+      .filter((d) => d.s1 + d.s2 > 0)
+      .map((d) => ({ date: d.date, combined: d.s1 + d.s2 }))
+      .sort((a, b) => a.combined - b.combined)
+      .slice(0, 5);
+
+    // Hourly breakdown
+    const hourly1 = new Array(24).fill(0);
+    const hourly2 = new Array(24).fill(0);
+    rawHistory1.forEach((row) => {
+      const rowMs = new Date(row.date).getTime();
+      if (rowMs < startMs || rowMs > endMs) return;
+      const count = row.peoplecount ?? 0;
+      if (count > 0 && count <= 20) {
+        hourly1[new Date(row.date).getUTCHours()] += count;
+      }
+    });
+    rawHistory2.forEach((row) => {
+      const rowMs = new Date(row.date).getTime();
+      if (rowMs < startMs || rowMs > endMs) return;
+      const count = row.peoplecount ?? 0;
+      if (count > 0 && count <= 20) {
+        hourly2[new Date(row.date).getUTCHours()] += count;
+      }
+    });
+    const hourLabels = Array.from({ length: 24 }, (_, i) => {
+      const suffix = i < 12 ? "am" : "pm";
+      const h = i === 0 ? 12 : i > 12 ? i - 12 : i;
+      return `${h}${suffix}`;
+    });
+
+    // Day-of-week average
+    const dow1 = new Array(7).fill(0);
+    const dow2 = new Array(7).fill(0);
+    const dowDates1 = Array.from({ length: 7 }, () => new Set());
+    const dowDates2 = Array.from({ length: 7 }, () => new Set());
+    rawHistory1.forEach((row) => {
+      const rowMs = new Date(row.date).getTime();
+      if (rowMs < startMs || rowMs > endMs) return;
+      const count = row.peoplecount ?? 0;
+      if (count > 0 && count <= 20) {
+        const d = new Date(row.date);
+        const w = d.getUTCDay();
+        dow1[w] += count;
+        dowDates1[w].add(d.toISOString().split("T")[0]);
+      }
+    });
+    rawHistory2.forEach((row) => {
+      const rowMs = new Date(row.date).getTime();
+      if (rowMs < startMs || rowMs > endMs) return;
+      const count = row.peoplecount ?? 0;
+      if (count > 0 && count <= 20) {
+        const d = new Date(row.date);
+        const w = d.getUTCDay();
+        dow2[w] += count;
+        dowDates2[w].add(d.toISOString().split("T")[0]);
+      }
+    });
+    const dowAvg1 = dow1.map((v, i) => dowDates1[i].size ? Math.round(v / dowDates1[i].size) : 0);
+    const dowAvg2 = dow2.map((v, i) => dowDates2[i].size ? Math.round(v / dowDates2[i].size) : 0);
+
+    // Battery health
+    function batteryStats(data) {
+      const vals = [];
+      (data || []).forEach((row) => {
+        const rowMs = new Date(row.date).getTime();
+        if (rowMs < startMs || rowMs > endMs) return;
+        if (row.batterystatus != null) vals.push(Number(row.batterystatus));
+      });
+      if (!vals.length) return { min: "-", avg: "-", max: "-" };
+      return {
+        min: Math.min(...vals).toFixed(2),
+        avg: (vals.reduce((a, b) => a + b, 0) / vals.length).toFixed(2),
+        max: Math.max(...vals).toFixed(2),
+      };
+    }
+    const battery1 = batteryStats(rawHistory1);
+    const battery2 = batteryStats(rawHistory2);
+
+    setAnalysisResult({
+      filtered, stats1: stats(s1vals), stats2: stats(s2vals),
+      busiest, quietest,
+      hourly1, hourly2, hourLabels,
+      dowAvg1, dowAvg2,
+      battery1, battery2,
+    });
   }
 
   return (
@@ -284,6 +369,25 @@ export default function Homepage() {
                   ) : ( <p>No data in selected range.</p> )}
                 </div>
 
+                {/* Trend line chart */}
+                {analysisResult.filtered.length > 1 && (
+                  <div className="panel" style={{ marginBottom: "1rem" }}>
+                    <h4>Usage Trend</h4>
+                    <div style={{ height: "200px" }}>
+                      <Line
+                        data={{
+                          labels: analysisResult.filtered.map((d) => d.date),
+                          datasets: [
+                            { label: "Sensor 1", data: analysisResult.filtered.map((d) => d.s1), borderColor: "#2563eb", backgroundColor: "rgba(37,99,235,0.1)", tension: 0.3, fill: true, pointRadius: 3 },
+                            { label: "Sensor 2", data: analysisResult.filtered.map((d) => d.s2), borderColor: "#16a34a", backgroundColor: "rgba(22,163,74,0.1)", tension: 0.3, fill: true, pointRadius: 3 },
+                          ],
+                        }}
+                        options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "top" } }, scales: { y: { beginAtZero: true } } }}
+                      />
+                    </div>
+                  </div>
+                )}
+
                 <div className="analyse-bottom-grid">
                   <div className="panel">
                     <h4>Summary Stats</h4>
@@ -338,6 +442,63 @@ export default function Homepage() {
                       ))}
                     </div>
                   </div>
+
+                  <div className="panel">
+                    <h4>Quietest Days</h4>
+                    <div className="busiest-list">
+                      {analysisResult.quietest.length > 0 ? analysisResult.quietest.map((d, i) => (
+                        <div className="busiest-row" key={d.date}>
+                          <span className="busiest-rank">#{i + 1}</span>
+                          <span className="busiest-date">{d.date}</span>
+                          <span className="busiest-count">{d.combined} uses</span>
+                        </div>
+                      )) : <p style={{ color: "#94a3b8", fontSize: "0.85rem" }}>No data.</p>}
+                    </div>
+                  </div>
+
+                  <div className="panel" style={{ gridColumn: "span 2" }}>
+                    <h4>Peak Hours (Total Usage by Hour)</h4>
+                    <div style={{ height: "200px" }}>
+                      <Bar
+                        data={{
+                          labels: analysisResult.hourLabels,
+                          datasets: [
+                            { label: "Sensor 1", data: analysisResult.hourly1, backgroundColor: "#2563eb", borderRadius: 3 },
+                            { label: "Sensor 2", data: analysisResult.hourly2, backgroundColor: "#16a34a", borderRadius: 3 },
+                          ],
+                        }}
+                        options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "top" } }, scales: { y: { beginAtZero: true }, x: { ticks: { maxRotation: 45 } } } }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="panel" style={{ gridColumn: "span 2" }}>
+                    <h4>Average Usage by Day of Week</h4>
+                    <div style={{ height: "200px" }}>
+                      <Bar
+                        data={{
+                          labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                          datasets: [
+                            { label: "Sensor 1", data: analysisResult.dowAvg1, backgroundColor: "#2563eb", borderRadius: 3 },
+                            { label: "Sensor 2", data: analysisResult.dowAvg2, backgroundColor: "#16a34a", borderRadius: 3 },
+                          ],
+                        }}
+                        options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "top" } }, scales: { y: { beginAtZero: true } } }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="panel">
+                    <h4>Battery Health</h4>
+                    <table className="stats-table">
+                      <thead><tr><th></th><th>Sensor 1</th><th>Sensor 2</th></tr></thead>
+                      <tbody>
+                        <tr><td>Min</td><td>{analysisResult.battery1.min}</td><td>{analysisResult.battery2.min}</td></tr>
+                        <tr><td>Avg</td><td>{analysisResult.battery1.avg}</td><td>{analysisResult.battery2.avg}</td></tr>
+                        <tr><td>Max</td><td>{analysisResult.battery1.max}</td><td>{analysisResult.battery2.max}</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -348,7 +509,7 @@ export default function Homepage() {
           </div>
         )}
 
-        <div className="bottom-grid">
+        {activeView === "graph" && <div className="bottom-grid">
           <div className="left-col">
             <div className="panel">
               <h3>Toilet Sensor Data 1</h3>
@@ -398,7 +559,7 @@ export default function Homepage() {
               ))}
             </div>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );
