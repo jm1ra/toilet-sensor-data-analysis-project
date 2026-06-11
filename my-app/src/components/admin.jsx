@@ -43,8 +43,8 @@ export default function Admin() {
             <div className="admin-page">
                 <h2>Administration</h2>
                 <div className="buttons">
-                    <button id="add-data" onClick={() => navigate("/add-data")}>
-                        Add to Data
+                    <button id="replace-data" onClick={() => navigate("/replace-data")}>
+                        Replace Data
                     </button>
                     <button id="manage-employees" onClick={() => navigate("/manage-employees")}>
                         Manage Employees
