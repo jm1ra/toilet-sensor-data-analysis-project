@@ -1,9 +1,12 @@
+/* NIT3004 - IT CAPSTONE PROJECT 2 - Toilet Sensors at Cruickshank park
+created by John Demelis, Ryan Martinovic and Justin Mira*/
 /// src/components/ManageEmployees.jsx
+// importing necessary libaries and components for the homepage
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import "../admin.style.css";
-
+//Sends an authenticated POST request to the manage-users Supabase Edge function.
 const FUNCTION_URL = "https://xidjslcicqwbgcyjkbnj.supabase.co/functions/v1/manage-users";
 
 async function callFunction(action, payload = {}) {
@@ -17,7 +20,7 @@ async function callFunction(action, payload = {}) {
         },
         body: JSON.stringify({ action, payload }),
     });
-
+    //Error function which results data : null, error: {Message} format.
     const json = await res.json();
 
     if (!res.ok || json.error || json.message) {
@@ -27,9 +30,9 @@ async function callFunction(action, payload = {}) {
 
     return json;
 }
-
+//Blank form template to reset both the create and edit forms on each request.
 const EMPTY_FORM = { email: "", password: "" };
-
+//Initialise state for the employee list, load/form/edit/delete status and error tracking, and the current editing/deleting user targets.
 export default function ManageEmployees() {
     const navigate = useNavigate();
 
@@ -48,9 +51,9 @@ export default function ManageEmployees() {
 
     const [deletingId, setDeletingId] = useState(null);
     const [deleteError, setDeleteError] = useState(null); // FIX: track delete errors
-
+    //fetch request to populate employee table.
     useEffect(() => { fetchUsers(); }, []);
-
+    //Fetches the full user list from the Edge function, handles response sharp variations and updates load error state.
     async function fetchUsers() {
         setLoading(true);
         setLoadError(null);
@@ -63,7 +66,7 @@ export default function ManageEmployees() {
         }
         setLoading(false);
     }
-
+    //Valdiates that email and password are present, then calls the Edge Function to create a new auth user. Failsafe is in place if any error creating the user occurs.
     async function handleCreate() {
         if (!form.email || !form.password) {
             setFormStatus("error");
@@ -85,7 +88,7 @@ export default function ManageEmployees() {
             fetchUsers();
         }
     }
-
+    //Function when updating the users from the Edge Function
     async function handleUpdate() {
         setEditStatus("loading");
         const { error } = await callFunction("update", {
@@ -103,7 +106,7 @@ export default function ManageEmployees() {
             setTimeout(() => { setEditingUser(null); setEditStatus(null); }, 1000);
         }
     }
-
+    //Delete user function
     async function handleDelete(id) {
         setDeleteError(null); // FIX: clear any previous error
         const { error } = await callFunction("delete", { id });
@@ -115,7 +118,7 @@ export default function ManageEmployees() {
             fetchUsers();
         }
     }
-
+    /*The code below is the UI elements that create the visuals for the website, this is where all the features like buttons and input box logic is applied.*/
     return (
         <div className="wrap">
 
@@ -279,7 +282,7 @@ export default function ManageEmployees() {
         </div>
     );
 }
-
+// Built in CSS - Creates style definitions for the employee management UI.
 const inputStyle = {
     padding: "8px 10px",
     borderRadius: "6px",

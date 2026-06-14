@@ -1,4 +1,7 @@
+/* NIT3004 - IT CAPSTONE PROJECT 2 - Toilet Sensors at Cruickshank park
+created by John Demelis, Ryan Martinovic and Justin Mira*/
 // src/components/Login.jsx
+// importing necessary libaries and components for the login
 import { useNavigate } from "react-router-dom";
 import "../style.css";
 import { useState } from "react";

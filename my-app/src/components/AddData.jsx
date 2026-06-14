@@ -1,4 +1,7 @@
+/* NIT3004 - IT CAPSTONE PROJECT 2 - Toilet Sensors at Cruickshank park
+created by John Demelis, Ryan Martinovic and Justin Mira*/
 // src/components/AddData.jsx
+// importing necessary libaries and components for AddData
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
@@ -6,16 +9,16 @@ import { supabase } from "../supabaseClient";
 import "../admin.style.css";
 
 
-
+//Gather Toilet Sensor 1 and Toilet Sensor 2 table data from the database.
 const TABLES = ["Toilet Sensor 1", "Toilet Sensor 2"];
-
+// Maps lowercase CSV header names to their matching Supabase column names.
 const CSV_COLUMN_MAP = {
     totalcount:    "totalcount",
     batterystatus: "batterystatus",
     peoplecount:   "peoplecount",
     date:          "date",
 };
-
+// Parses a CSV string into an array of row objects using CSV_COLUMN_MAP to match headers to Supabase columns. Throws if no data rows are found.
 function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/);
     if (lines.length < 2) throw new Error("CSV must have a header row and at least one data row.");
@@ -32,7 +35,7 @@ function parseCSV(text) {
         return row;
     });
 }
-
+//State for the selected sensor table, chosen CSV file, and uploaded status/message
 export default function AddData() {
     const navigate = useNavigate();
 
@@ -40,7 +43,7 @@ export default function AddData() {
     const [csvFile, setCsvFile]             = useState(null);
     const [uploadStatus, setUploadStatus]   = useState(null);  // null | "loading" | "success" | "error"
     const [uploadMessage, setUploadMessage] = useState("");
-
+    //CSV upload function - the CSV is read as text, parses it into rows, clears the target supabase table, and inserts the new rows.
     async function handleUpload() {
         if (!csvFile) {
             setUploadStatus("error");
@@ -87,7 +90,7 @@ export default function AddData() {
             setUploadMessage(err.message);
         }
     }
-
+    /* This is where the front-end logic starts, the code below uses UI elements to create features users can interact with.*/
     return (
         <div className="wrap">
 

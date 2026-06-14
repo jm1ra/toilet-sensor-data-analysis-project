@@ -1,4 +1,7 @@
+/* NIT3004 - IT CAPSTONE PROJECT 2 - Toilet Sensors at Cruickshank park
+created by John Demelis, Ryan Martinovic and Justin Mira*/
 // src/components/Homepage.jsx
+// importing necessary libaries and components for the homepage
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabaseClient";
@@ -6,9 +9,9 @@ import { Bar, Line } from "react-chartjs-2";
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend } from "chart.js";
 import "../homepage.style.css";
 
-
+// Registering ChartJS components
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Tooltip, Legend);
-
+// Initialise navigation, sensor data, chart state, schedule, data range filters, and view/analysis controls.
 export default function Homepage() {
   const navigate = useNavigate();
   const [sensor1, setSensor1] = useState(null);
@@ -30,7 +33,7 @@ export default function Homepage() {
   useEffect(() => {
     loadData();
   }, []);
-
+//This component directly communicates with Supabase and extracts the data from the database to be used in the homepage.
   async function loadData() {
     const { data: data1, error: error1 } = await supabase
       .from("Toilet Sensor 1")
@@ -55,7 +58,7 @@ export default function Homepage() {
     setSensor1(data1);
     setSensor2(data2);
 
-    // Paginate through all rows 1000 at a time to bypass Supabase default cap
+    // Function to bypass Supabase's data limit to allow all the data from the database to be displayed on the homepage.
     async function fetchAll(table) {
       const pageSize = 1000;
       let page = 0;
@@ -80,7 +83,7 @@ export default function Homepage() {
     setRawHistory1(history1 || []);
     setRawHistory2(history2 || []);
 
-    // Store the actual date range from the DB so presets can use it
+    // Store the actual date range from the Database so presets can use it
     if (history1 && history1.length > 0) {
       const firstDate = history1[0].date.split("T")[0];
       const lastDate  = history1[history1.length - 1].date.split("T")[0];
@@ -89,7 +92,7 @@ export default function Homepage() {
       setStartDate(firstDate);
       setEndDate(lastDate);
     }
-
+    //Aggregates raw sensor rows by date, summing people counts, tracking entry count and recording the daily peak totalcount.
     function aggregateByDate(data) {
       const days = {};
       (data || []).forEach(row => {
@@ -103,7 +106,7 @@ export default function Homepage() {
       });
       return days;
     }
-
+    //Aggregate both sensors by DATE, take the most recent 14 days from sensor 1 then merge into a combined array for the chart
     const days1 = aggregateByDate(history1);
     const days2 = aggregateByDate(history2);
     const allDayKeys = Object.keys(days1);
@@ -115,7 +118,7 @@ export default function Homepage() {
       "Sensor 2": days2[day]?.total ?? 0,
     }));
     setChartData(Merged);
-
+    //Fetch the cleaning schedule from supabase and store as a variable
     const { data: scheduleData } = await supabase
       .from("cleaning_schedule")
       .select("*")
@@ -133,7 +136,7 @@ export default function Homepage() {
     setStartDate(start.toISOString().split("T")[0]);
     setEndDate(dbDateRange.last);
   }
-
+  /* Validates that both dates are selected, then converts the start/end date strings into UTC timestamps spanning the full day range.*/
   function runAnalysis() {
     if (!startDate || !endDate) return;
 
@@ -141,7 +144,7 @@ export default function Homepage() {
     const [ey, em, ed] = endDate.split("-").map(Number);
     const startMs = Date.UTC(sy, sm - 1, sd, 0, 0, 0, 0);
     const endMs   = Date.UTC(ey, em - 1, ed, 23, 59, 59, 999);
-
+    //This function helps filter each sensor's raw rows to only those within the selected range, discards invalid readings and aggregates the remainder by date - summing counts and entry totals.
     function filterAndAggregate(data) {
       const days = {};
       (data || []).forEach((row) => {
@@ -157,7 +160,7 @@ export default function Homepage() {
       });
       return days;
     }
-
+    //Aggregate both sensors over the selected range, union their date keys, and sort chronologically.
     const days1 = filterAndAggregate(rawHistory1);
     const days2 = filterAndAggregate(rawHistory2);
     const allDays = Array.from(
@@ -172,7 +175,7 @@ export default function Homepage() {
 
     const s1vals = filtered.map((d) => d.s1);
     const s2vals = filtered.map((d) => d.s2);
-
+    // Function which helps return avg, min, max and total for the given array of daily counts, as well as a failsafe for empty inputs.
     function stats(vals) {
       if (!vals.length) return { avg: 0, max: 0, min: 0, total: 0 };
       return {
@@ -182,19 +185,19 @@ export default function Homepage() {
         total: vals.reduce((a, b) => a + b, 0),
       };
     }
-
+    //Analysis graph section - the math behind calulating busiest days
     const busiest = [...filtered]
       .map((d) => ({ date: d.date, combined: d.s1 + d.s2 }))
       .sort((a, b) => b.combined - a.combined)
       .slice(0, 5);
-
+    //Analysis graph section - The math behind calulating quietest days
     const quietest = [...filtered]
       .filter((d) => d.s1 + d.s2 > 0)
       .map((d) => ({ date: d.date, combined: d.s1 + d.s2 }))
       .sort((a, b) => a.combined - b.combined)
       .slice(0, 5);
 
-    // Hourly breakdown
+    // Math to calculate peak hours in the selected range - this sums up total usage by hour of day across the whole range, so we can see which hours are busiest on average.
     const hourly1 = new Array(24).fill(0);
     const hourly2 = new Array(24).fill(0);
     rawHistory1.forEach((row) => {
@@ -219,7 +222,7 @@ export default function Homepage() {
       return `${h}${suffix}`;
     });
 
-    // Day-of-week average
+    // Math to calculate average usage by day of week in the selected range.
     const dow1 = new Array(7).fill(0);
     const dow2 = new Array(7).fill(0);
     const dowDates1 = Array.from({ length: 7 }, () => new Set());
@@ -249,7 +252,7 @@ export default function Homepage() {
     const dowAvg1 = dow1.map((v, i) => dowDates1[i].size ? Math.round(v / dowDates1[i].size) : 0);
     const dowAvg2 = dow2.map((v, i) => dowDates2[i].size ? Math.round(v / dowDates2[i].size) : 0);
 
-    // Battery health
+    // Math to calculate battery health stats in the selected range.
     function batteryStats(data) {
       const vals = [];
       (data || []).forEach((row) => {
@@ -275,7 +278,7 @@ export default function Homepage() {
       battery1, battery2,
     });
   }
-
+  /*User interface - this is where the UI elements are defined */
   return (
     <div className="wrap">
       <div className="dashboard">

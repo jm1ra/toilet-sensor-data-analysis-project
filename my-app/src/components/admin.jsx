@@ -1,3 +1,5 @@
+/* NIT3004 - IT CAPSTONE PROJECT 2 - Toilet Sensors at Cruickshank park
+created by John Demelis, Ryan Martinovic and Justin Mira*/
 // src/components/admin.jsx
 import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +39,7 @@ export default function Admin() {
         setTimeout(() => setSavemessage(""), 3000);
     }
 
-    
+    /*Code below is the UI elements for the website, this is where all the visuals are created to display to the user. */
     return (
         <div className="wrap">
             <div className="admin-page">
